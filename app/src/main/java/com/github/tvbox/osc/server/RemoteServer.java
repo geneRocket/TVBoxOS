@@ -12,6 +12,7 @@ import com.github.tvbox.osc.base.App;
 import com.github.tvbox.osc.event.RefreshEvent;
 import com.github.tvbox.osc.event.ServerEvent;
 import com.github.tvbox.osc.util.FileUtils;
+import com.github.tvbox.osc.util.LOG;
 import com.github.tvbox.osc.util.OkGoHelper;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -110,9 +111,11 @@ public class RemoteServer extends NanoHTTPD {
                 }
                 if (fileName.equals("/proxy")) {
                     Map<String, String> params = session.getParms();
+                    LOG.i("params:" + params);
                     if (params.containsKey("do")) {
                         Object[] rs = ApiConfig.get().proxyLocal(params);
                         try {
+                            LOG.i("rs.length:" + rs.length);
                             if (rs.length >= 3) {
                                 int code = (int) rs[0];
                                 String mime = (String) rs[1];
@@ -124,6 +127,9 @@ public class RemoteServer extends NanoHTTPD {
                                 );
                                 return response;
                             } else if (rs.length == 1) {
+                                Response response = (Response) rs[0];
+                                LOG.i("rs[0].name:" + rs[0].getClass().getCanonicalName());
+                                LOG.i("rs[0].mimeType:" + response.getMimeType());
                                 return (Response) rs[0];
                             }
                             return NanoHTTPD.newFixedLengthResponse(NanoHTTPD.Response.Status.INTERNAL_ERROR, NanoHTTPD.MIME_PLAINTEXT, "500");

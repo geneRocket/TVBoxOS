@@ -24,7 +24,7 @@ public class BaseDialog extends Dialog {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        CutoutUtil.adaptCutoutAboveAndroidP(this, true);//设置刘海
+        CutoutUtil.adaptCutoutAboveAndroidP(this.getContext(), true);//设置刘海
         super.onCreate(savedInstanceState);
     }
 
